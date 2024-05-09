@@ -3,6 +3,12 @@ const app = express();
 const PORT = 8080;
 const cors = require("cors");
 
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
 var exec = require("child_process").execFile;
 
 app.use(express.json());
