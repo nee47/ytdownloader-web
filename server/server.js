@@ -3,13 +3,13 @@ const app = express();
 const PORT = 8080;
 const cors = require("cors");
 
+const {searchVid} = require("./controllers/searchController");
+
 app.use(
   cors({
     origin: "*",
   })
 );
-
-var exec = require("child_process").execFile;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -18,10 +18,9 @@ app.get("/api/home", (req, res) => {
   res.json({ message: "hello world" });
 });
 
-app.post("/api/download", (req, res) => {
-  console.log(req.body);
-  res.json({ message: "hello world" });
-});
+
+app.get("/api/search", searchVid);
+
 app.get("/download", (req, res) => {
   //const file = `${__dirname}/temp/vid1.mp4`;
 
