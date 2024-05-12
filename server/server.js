@@ -19,7 +19,7 @@ app.get("/api/home", (req, res) => {
 });
 
 
-app.get("/api/search", searchVid);
+app.get("/api/search/:url", searchVid);
 
 app.get("/download", (req, res) => {
   //const file = `${__dirname}/temp/vid1.mp4`;

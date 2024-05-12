@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 
 function page() {
   const [selectedCheckbox, setSelectedCheckbox] = useState("option1");
@@ -7,11 +8,17 @@ function page() {
   const handleCheckboxChange = (checkboxValue) => {
     setSelectedCheckbox(checkboxValue);
   };
+
+  const searchParams = useSearchParams();
+  const title = searchParams.get("title");
+  const url = searchParams.get("url");
+  const thumbnail = searchParams.get("thumbnailUrl");
+  
   return (
     <div>
-      <div className=" max-w-screen-md m-auto border-black-500 bg-slate-800">
-        <div className="p-4 border border-gray-200 rounded shadow-md">
-          <div className="flex items-center justify-center  space-x-4 mb-4 text-white">
+      <div className=" max-w-screen-md m-auto border-black-500">
+        <div className="flex flex-col items-center p-4 border border-gray-200 rounded shadow-md gap-6">
+          <div className="flex items-center justify-center  space-x-4 mb-4">
             <input
               type="checkbox"
               checked={selectedCheckbox === "option1"}
@@ -34,7 +41,13 @@ function page() {
             />
             <label className="">420p</label>
           </div>
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+
+          <div className="flex flex-col items-center gap-6">
+            <h2>{title}</h2>
+            <img src={thumbnail} alt="thumbnail" />
+          </div>
+
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-56">
             Descargar
           </button>
         </div>

@@ -1,29 +1,37 @@
 const path = require("path");
 
-function searchVid(req, res) {
-  var exec = require("child_process").execFile;
+var exec = require("child_process").execFile;
 
+async function searchVid(req, res) {
   const youtubeUrlRegex =
     /^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+/;
 
-  if (!youtubeUrlRegex.test(req.body.url)) {
+  if (!youtubeUrlRegex.test(req.params.url)) {
     console.log("NOT VALID  LINK");
-    res.send(400);
+    res.status(400);
   } else {
     console.log("VALID VIDEO LINK");
+
     exec(
       `${path.resolve(__dirname, "..")}/resources/yt-dlp.exe`,
-      ["-e", "--get-thumbnail", req.body.url],
+      ["-e", "--get-thumbnail", req.params.url],
       function (err, data) {
         if (err) {
-          const estoError = "esto es error " + err.toString();
-          console.log(estoError);
+          console.log("errorrrrrrrrr")
+          res.status(400);
+          res.json({errorcito: "Video not found"})
         }
-        const esto = "ESTO ES DATA : " + data.toString();
-        console.log(esto);
-        res.json({ message: "UPDATE" });
+        else{
+          results = data.toString().split('\n')
+          console.log(results)
+          res.json({
+            title: results[0],
+            imageSource: results[1],
+            url: req.params.url
+          })
+        } 
       }
-    );
+    )
   }
 }
 
