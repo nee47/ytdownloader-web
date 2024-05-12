@@ -20,6 +20,10 @@ out
 .DS_Store/
 *.pem
 
+bin
+
+temp 
+
 # debug
 npm-debug.log*
 yarn-debug.log*
