@@ -41,10 +41,9 @@ async function downloadVid(req, res){
             // Handle error, but keep in mind the response may be partially-sent
             // so check res.headersSent
         } else {
-            // decrement a download credit, etc.
             console.log("download succesfull");
         }
-        }); // Set disposition and send it.
+        }); 
 }
 
 module.exports = {prepareDownload, downloadVid}

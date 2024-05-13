@@ -1,11 +1,11 @@
 "use client";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 export default function Home() {
-
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
@@ -14,34 +14,38 @@ export default function Home() {
   const router = useRouter();
 
   const fetchData = async () => {
-
-    const url = `http://localhost:8080/api/search/${encodeURIComponent(inputValue)}`;
+    setLoading(true);
+    const url = `http://localhost:8080/api/search/${encodeURIComponent(
+      inputValue
+    )}`;
 
     try {
       const res = await fetch(url, {
         next: {
-          revalidate: 0
-        }
+          revalidate: 0,
+        },
       });
 
       console.log(res);
       const r = await res.json();
-      
-      if(res.ok){
-        
+
+      if (res.ok) {
         console.log(r);
-        router.push(`/download?title=${encodeURIComponent(r.title)}&url=${r.url}&thumbnailUrl=${r.imageSource}`);
+        router.push(
+          `/download?title=${encodeURIComponent(r.title)}&url=${
+            r.url
+          }&thumbnailUrl=${r.imageSource}`
+        );
         return r;
+      } else {
+        console.log(r.errorcito);
+        setLoading(false);
       }
-      else{
-        console.log(r.errorcito)
-      }
-      
     } catch (error) {
       console.log("entramos a error");
+      setLoading(false);
       //console.log(error)
     }
-    
   };
 
   return (
@@ -51,17 +55,17 @@ export default function Home() {
           YTDOWNLOADER - Descargador de videos de YouTube
         </h1>
         <p>Descarga videos de YouTube en MP3 y MP4 de alta calidad gratis</p>
-
-        <div className="bg-white p-4 text-center ">
-          <div className=" border-red-500 border-2">
+        <div className="text-center ">
+          <div className="flex flex-col md:flex-row  border-red-500  border-2">
             <input
               onChange={handleInputChange}
               type="text"
               placeholder="Pegar enlace de youtube aqui"
-              className="px-4 mr-2 outline-none w-96 "
+              className="outline-none w-96 text-center"
             />
-            <button className="bg-red-500 text-white p-2" onClick={ fetchData}>
-              Buscar
+            <button className="bg-red-500 text-white p-2 relative" onClick={fetchData}>
+              {loading?<div className="w-6 h-6 border-2 border-l-0 border-r-0 rounded-full animate-spin relative top-0 bottom-0 left-0 right-0 m-auto">
+              </div>: "Buscar"}
             </button>
           </div>
         </div>

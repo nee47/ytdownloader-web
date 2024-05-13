@@ -9,6 +9,7 @@ function page() {
     setSelectedCheckbox(checkboxValue);
   };
 
+  const router = useRouter()
   const searchParams = useSearchParams();
   const title = searchParams.get("title");
   const vidUrl = searchParams.get("url");
@@ -38,7 +39,8 @@ function page() {
       
       if(res.ok){
         console.log(r);
-        const vid = await  fetch(backendUrl+`/${r.id}`)
+        //downloads the vid once the servers finished downloading the vid
+        router.push(backendUrl+`/${r.id}`);
         return r;
       }
       else{
